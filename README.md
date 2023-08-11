@@ -262,12 +262,12 @@ or a List
 
 ## Documentation
 
-- \api\schema/swagger/
+- /api/schema/swagger/
 
 
 ## Running the Cron Job
 - You new to add the cron job first using `python manage.py crontab add`
-- The show it using `python manage.py crontab show`
+- Then show it using `python manage.py crontab show`
 
 
 ## The Management Tool
