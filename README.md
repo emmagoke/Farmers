@@ -19,13 +19,6 @@ pipenv install
 ```
 pipenv shell
 ```
-#### Backend Dependencies
-
-Once you have your virtual environment setup and running, install dependencies by navigating to the `/backend` directory and running:
-
-```git bash (For Windows Users)
-pip install -r requirements.txt
-```
 
 ## Database Setup
 
