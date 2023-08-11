@@ -1,5 +1,0 @@
-id,first_name,last_name,phone_number,age,address,crops,season_best_for_crops
-1,Adis,Musa,08123456789,44,"3, Anaygun str, Ibadan","maize, rice, cassava",dry/rainy
-2,afa,doal,09078656787,30,"10, Anaygun str, Ibadan","rice, bean, cassava",wet/rainy
-3,moshood,taw,07056345412,40,"90, Anaygun str, Ibadan","Bean, Maize, Rice",dry/rainy
-4,well,endd,09010002030,90,"100, Anaygun str, Ibadan","Bean, Yam, Coffee",dry/rainy
