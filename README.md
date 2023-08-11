@@ -73,23 +73,9 @@ To access the admin panel in django, create a super user
  python manage.py createsuperuser
 ```
 
+## To run the Django Development Server
+`python manage.py runserver`
 
-## Setting up the Frontend
-
-> Note: The frontend is design to work with endpoints in the backend -> [Flask-based Backend](../backend). It is recommended you set up the backend first, using Postman or curl to test the backend first, update the endpoints in the frontend, and every thing will work perfectly.
-
-### Installing Frontend Dependencies
-
-#### Installing Node and NPM
-
-This project depends on Nodejs and Node Package Manager (NPM). Before continuing, you must download and install Node (the download includes NPM) from [https://nodejs.com/en/download](https://nodejs.org/en/download/).
-
-#### Installing project dependencies
-
-This project uses NPM to manage software dependencies. NPM Relies on the package.json file located in the `frontend` directory of this repository. After cloning, open your terminal and run:
-
-```bash
-npm install
 ```
 
 
