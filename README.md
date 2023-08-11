@@ -273,5 +273,5 @@ or a List
 ## The Management Tool
 - This management tool requires a url parameter. You new to set the environment variable `USERNAME` and `PASSWORD`
 ```
-e,g USERNAME=username PASSWORD=your_password python manage csv_upload url
+e,g USERNAME=username PASSWORD=your_password python manage.py csv_upload url
 ```
