@@ -3,6 +3,7 @@
 ## Local Requirement
 - Requires Python 3.7 or Later
 - Django 4.1 or Lower
+- MySql version 5
 
 #### Virtual Environment
 
@@ -69,34 +70,7 @@ To access the admin panel in django, create a super user
 ## To run the Django Development Server
 `python manage.py runserver`
 
-```
 
-
-## Required Tasks
-
-## Running Your Frontend
-
-The frontend app was built using create-react-app. In order to run the app in development mode use ```npm start```. You can change the script in the ```package.json``` file. 
-
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-```bash
-npm start
-```
-
-path('auth/signup', CreateUserAPIView.as_view(), name="signup"),
-	path('auth/login', UserLoginAPIView.as_view(), name="login"),
-	path('farmers/<int:pk>', SingleFarmerAPIView.as_view(),
-		name="farmer_detail"),
-	path('farmers', ListCreateFarmersView.as_view(),
-		name="farmers_list_create"),
-	path('farmers/users/<int:pk>', FarmerByUsedView.as_view(), 
-		name="user_farmers"),
-	path("schema/", SpectacularAPIView.as_view(), name="schema"),
-	path("schema/redoc/", SpectacularRedocView.as_view(url_name="schema"),
-		name="redoc",),
-	path("schema/swagger/", SpectacularSwaggerView.as_view(url_name="schema"),
-		name="swagger-ui"),
 
 ## Endpoints
 
