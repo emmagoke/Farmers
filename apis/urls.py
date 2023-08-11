@@ -7,8 +7,14 @@ from users.views import (
 
 from farmers.views import (
 	SingleFarmerAPIView,
-	CreateFarmersView,
+	ListCreateFarmersView,
 	FarmerByUsedView,
+)
+
+from drf_spectacular.views import (
+	SpectacularAPIView,
+	SpectacularRedocView,
+	SpectacularSwaggerView,
 )
 
 
@@ -17,7 +23,13 @@ urlpatterns = [
 	path('auth/login', UserLoginAPIView.as_view(), name="login"),
 	path('farmers/<int:pk>', SingleFarmerAPIView.as_view(),
 		name="farmer_detail"),
-	path('farmers', CreateFarmersView.as_view(), name="farmers_list"),
+	path('farmers', ListCreateFarmersView.as_view(),
+		name="farmers_list_create"),
 	path('farmers/users/<int:pk>', FarmerByUsedView.as_view(), 
 		name="user_farmers"),
+	path("schema/", SpectacularAPIView.as_view(), name="schema"),
+	path("schema/redoc/", SpectacularRedocView.as_view(url_name="schema"),
+		name="redoc",),
+	path("schema/swagger/", SpectacularSwaggerView.as_view(url_name="schema"),
+		name="swagger-ui"),
 ]

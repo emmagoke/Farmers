@@ -9,8 +9,12 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
+import environ
 
 from pathlib import Path
+
+env = environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,7 +31,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+PASSWORD=env('PASSWORD')
 # Application definition
 
 INSTALLED_APPS = [
@@ -37,6 +41,20 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Third Party
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'rest_framework_csv',
+    'django_crontab',
+    'sms',
+    'drf_spectacular',
+    'django_filters',
+
+    # Local App
+    'users.apps.UsersConfig',
+    'farmers.apps.FarmersConfig',
+    'apis.apps.ApisConfig',
 ]
 
 MIDDLEWARE = [
@@ -75,8 +93,15 @@ WSGI_APPLICATION = 'assessment.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'assessment',
+        'USER': 'goke',
+        'PASSWORD': 'root',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+        }
     }
 }
 
@@ -105,7 +130,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Lagos'
 
 USE_I18N = True
 
@@ -121,3 +146,54 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# The Custom User
+AUTH_USER_MODEL = 'users.CustomUser'
+
+
+REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+        'rest_framework_csv.renderers.CSVRenderer',
+    ),
+    'DEFAULT_FILTER_BACKENDS' : [
+        'django_filters.rest_framework.DjangoFilterBackend',
+        # 'rest_framework.filters.OrderingFilter',
+        'rest_framework.filters.SearchFilter',
+    ],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+     
+    'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE':3
+}
+
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+SPECTACULAR_SETTINGS = {
+"TITLE": "This an assessment",
+"DESCRIPTION": "A API that create users, Farmers and so on",
+"VERSION": "1.0.0",
+
+}
+
+
+CRONJOBS = [
+  ('0 7 * * *', 'farmers.cron.send_message')
+]
+
+SMS_BACKEND = 'sms.backends.console.SmsBackend'
+
+
+# # Celery settings
+# CELERY_BROKER_URL = "redis://localhost:6379"
+# CELERY_RESULT_BACKEND = "redis://localhost:6379"
