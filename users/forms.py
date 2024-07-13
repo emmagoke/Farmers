@@ -4,12 +4,12 @@ from .models import User
 
 class CustomUserCreationForm(UserCreationForm):
 	class Meta(UserCreationForm):
-		model = CustomUser
+		model = User
 		fields = UserCreationForm.Meta.fields + ("phone_number", )
 
 
 
 class CustomUserChangeForm(UserChangeForm):
 	class Meta:
-		model = CustomUser
+		model = User
 		fields = UserChangeForm.Meta.fields
