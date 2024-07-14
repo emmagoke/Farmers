@@ -21,7 +21,7 @@ class CustomUserAdmin(UserAdmin):
         "is_active",
 	]
 	fieldsets = (
-		(None, {"fields": ("phone_number",)}),
+		(None, {"fields": ("phone_number", "email", "password")}),
 		(
 			"Personal info",
 			{
