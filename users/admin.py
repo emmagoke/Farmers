@@ -12,7 +12,13 @@ class CustomUserAdmin(UserAdmin):
 	list_display = [
 		'email',
 		'phone_number',
-		'is_staff'
+		"first_name",
+        "last_name",
+        "created_at",
+        "updated_at",
+        "is_admin",
+        "is_staff",
+        "is_active",
 	]
 	fieldsets = (
 		(None, {"fields": ("phone_number",)}),
