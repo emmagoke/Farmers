@@ -14,9 +14,28 @@ class CustomUserAdmin(UserAdmin):
 		'phone_number',
 		'is_staff'
 	]
-	fieldsets = UserAdmin.fieldsets + ((None, {"fields": ("phone_number",)}), )
-	add_fieldsets = UserAdmin.add_fieldsets + ((None,
-		{"fields": ("phone_number", "email", )}), )
+	fieldsets = (
+		(None, {"fields": ("phone_number",)}),
+		(
+			"Personal info",
+			{
+				"fields": 
+					("first_name", "last_name")
+			}
+		),
+		(
+			"Permissions", 
+			{
+				"fields": (
+					"is_admin",
+					"is_verified",
+					"is_active",
+					"is_staff",
+				)
+			})
+	)
+	# add_fieldsets = UserAdmin.add_fieldsets + ((None,
+	# 	{"fields": ("phone_number", "email", )}), )
 	ordering = ("email",)
 
 admin.site.register(CustomUser, CustomUserAdmin)
