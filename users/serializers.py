@@ -25,7 +25,7 @@ class CustomTokenObtainPairSerializer(JwtTokenObtainPairSerializer):
 		token["is_superuser"] = user.is_superuser
 		
 		return token
-
+	
 
 class UserSerializer(serializers.ModelSerializer):
 	password = serializers.CharField(write_only=True,
