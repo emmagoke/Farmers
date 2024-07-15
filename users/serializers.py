@@ -26,6 +26,18 @@ class CustomTokenObtainPairSerializer(JwtTokenObtainPairSerializer):
 		
 		return token
 	
+	def authenticate_user(self, email, password):
+		""" This method check if the user exists and the password is correct """
+		try:
+			user = User.objects.get(Q(email=email) | Q(phone_numer=email))
+		except User.DoesNotExist:
+			user = None
+		
+		if user is not None and user.check_password(password):
+			return user
+
+		return None
+
 
 class UserSerializer(serializers.ModelSerializer):
 	password = serializers.CharField(write_only=True,
