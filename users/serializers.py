@@ -5,7 +5,7 @@ from rest_framework_simplejwt.serializers import (
     TokenObtainPairSerializer as JwtTokenObtainPairSerializer,
 )
 
-from .models import CustomUser
+from .models import User
 
 class UserSerializer(serializers.ModelSerializer):
 	password = serializers.CharField(write_only=True,
