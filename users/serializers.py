@@ -1,6 +1,9 @@
 from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth import authenticate
+from rest_framework_simplejwt.serializers import (
+    TokenObtainPairSerializer as JwtTokenObtainPairSerializer,
+)
 
 from .models import CustomUser
 
