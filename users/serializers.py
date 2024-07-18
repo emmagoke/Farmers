@@ -37,6 +37,25 @@ class CustomTokenObtainPairSerializer(JwtTokenObtainPairSerializer):
 			return user
 
 		return None
+	
+	def validate(self, attrs):
+		""" The username can be an email or phone_number."""
+		username = attrs["username"]
+		password = attrs["password"]
+
+		user = self.authenticate_user(username, password)
+
+		if user is None:
+			raise exceptions.AuthenticationFailed(
+                self.error_messages["no_active_account"],
+                "no_active_account",
+            )
+		
+		data = dict()
+		refresh = self.get_token(user)
+		data["refresh"] = str(refresh)
+		data["access"] = str(refresh.access_token)
+		return data
 
 
 class UserSerializer(serializers.ModelSerializer):
