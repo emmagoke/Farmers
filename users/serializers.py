@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate
 from rest_framework_simplejwt.serializers import (
     TokenObtainPairSerializer as JwtTokenObtainPairSerializer,
 )
+from django.db.models import Q
 
 from .models import User
 
