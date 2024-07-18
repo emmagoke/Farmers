@@ -10,6 +10,7 @@ from .models import User
 
 
 class CustomTokenObtainPairSerializer(JwtTokenObtainPairSerializer):
+	username_field = "username"
 	
 	@classmethod
 	def get_token(cls, user):
