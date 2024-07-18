@@ -1,4 +1,4 @@
-from rest_framework import serializers
+from rest_framework import serializers, exceptions
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.serializers import (
@@ -7,6 +7,7 @@ from rest_framework_simplejwt.serializers import (
 from django.db.models import Q
 
 from .models import User
+from .helpers import filter_phone_number
 
 
 class CustomTokenObtainPairSerializer(JwtTokenObtainPairSerializer):
@@ -31,7 +32,7 @@ class CustomTokenObtainPairSerializer(JwtTokenObtainPairSerializer):
 	def authenticate_user(self, username, password):
 		""" This method check if the user exists and the password is correct """
 		try:
-			user = User.objects.get(Q(email=username) | Q(phone_number=username))
+			user = User.objects.get(Q(email=username) | Q(phone_number=filter_phone_number(username)))
 		except User.DoesNotExist:
 			user = None
 		
