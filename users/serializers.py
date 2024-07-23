@@ -1,8 +1,64 @@
 from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth import authenticate
+from rest_framework_simplejwt.serializers import (
+    TokenObtainPairSerializer as JwtTokenObtainPairSerializer,
+)
+from django.db.models import Q
 
-from .models import CustomUser
+from .models import User
+
+
+class CustomTokenObtainPairSerializer(JwtTokenObtainPairSerializer):
+	username_field = "username"
+	
+	@classmethod
+	def get_token(cls, user):
+		
+		token = super().get_token(user)
+		
+		# Add custom claims
+		token["user_id"] = user.id
+		token["email"] = user.email
+		token["phone_number"] = user.phone_number
+		token["first_name"] = user.first_name
+		token["last_name"] = user.last_name
+		token["is_admin"] = user.is_admin
+		token["is_superuser"] = user.is_superuser
+		
+		return token
+	
+	def authenticate_user(self, username, password):
+		""" This method check if the user exists and the password is correct """
+		try:
+			user = User.objects.get(Q(email=username) | Q(phone_number=username))
+		except User.DoesNotExist:
+			user = None
+		
+		if user is not None and user.check_password(password):
+			return user		
+
+		return None
+	
+	def validate(self, attrs):
+		""" The username can be an email or phone_number."""
+		username = attrs["username"]
+		password = attrs["password"]
+
+		user = self.authenticate_user(username, password)
+
+		if user is None:
+			raise exceptions.AuthenticationFailed(
+                self.error_messages["no_active_account"],
+                "no_active_account",
+            )
+		
+		data = dict()
+		refresh = self.get_token(user)
+		data["refresh"] = str(refresh)
+		data["access"] = str(refresh.access_token)
+		return data
+
 
 class UserSerializer(serializers.ModelSerializer):
 	password = serializers.CharField(write_only=True,
