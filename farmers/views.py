@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from rest_framework import generics, permissions
 from rest_framework_csv.renderers import CSVRenderer
-from users.models import CustomUser
+from users.models import User
 
 
 from .serializers import (
