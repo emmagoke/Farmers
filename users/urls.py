@@ -7,7 +7,10 @@ from rest_framework_simplejwt.views import (
 
 from .viewsets import AuthenticationViewset
 
+
+router  = DefaultRouter()
+router.register(r"auth", AuthenticationViewset, basename="auth")
+
 urlpatterns = [
-    path('login/', TokenObtainPairView.as_view(), name='login'),
-    path('refresh/', TokenRefreshView.as_view(), name='refresh'),
+    path("", include(router.urls)),
 ]
