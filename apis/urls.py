@@ -1,9 +1,9 @@
 from django.urls import path
 
-from users.views import (
-	CreateUserAPIView,
-	UserLoginAPIView,
-)
+# from users.views import (
+# 	CreateUserAPIView,
+# 	UserLoginAPIView,
+# )
 
 from farmers.views import (
 	SingleFarmerAPIView,
@@ -19,8 +19,8 @@ from drf_spectacular.views import (
 
 
 urlpatterns = [
-	path('auth/signup', CreateUserAPIView.as_view(), name="signup"),
-	path('auth/login', UserLoginAPIView.as_view(), name="login"),
+	# path('auth/signup', CreateUserAPIView.as_view(), name="signup"),
+	# path('auth/login', UserLoginAPIView.as_view(), name="login"),
 	path('farmers/<int:pk>', SingleFarmerAPIView.as_view(),
 		name="farmer_detail"),
 	path('farmers', ListCreateFarmersView.as_view(),
@@ -32,4 +32,5 @@ urlpatterns = [
 		name="redoc",),
 	path("schema/swagger/", SpectacularSwaggerView.as_view(url_name="schema"),
 		name="swagger-ui"),
+    # path("create", CreateUserAPIView.as_view(), name="create-user"),
 ]
