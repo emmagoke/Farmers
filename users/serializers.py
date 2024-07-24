@@ -91,30 +91,3 @@ class UserSerializer(serializers.ModelSerializer):
 		return user
 
 
-class LoginSerializer(serializers.Serializer):
-	email = serializers.CharField(max_length=254, required=True)
-	password = serializers.CharField(max_length=128,
-		required=True, write_only=True)
-
-	def validate(self, attrs):
-		email = attrs.get('email')
-		password = attrs.get('password')
-		try:
-			user_obj = User.objects.get(email=email)
-		except User.DoesNotExist:
-			pass
-			
-		if user_obj is None:
-			try:
-				user_obj = User.objects.get(phone_number=email)
-			except User.DoesNotExist:
-				message = 'Unable to log in with provided credentials.'
-				raise serializers.ValidationError({"authorization": message})
-		
-		user = authenticate(request=self.context.get('request'),
-						username=user_obj.username, password=password)
-				
-				
-		attrs['user'] = user
-
-		return attrs
