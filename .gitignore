@@ -3,3 +3,4 @@ Screenshot (1149).png
 .env
 Pipfile
 Pipfile.lock
+db.sqlite3
