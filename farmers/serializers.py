@@ -15,7 +15,7 @@ class FarmerSerializer(serializers.ModelSerializer):
 		]
 
 
-class RegisterFarmerSerializer(serializers.ModelSerializer):
+class RegisterFarmerSerializer(serializers.Serializer):
 
 	class Meta:
 		model = Farmer
