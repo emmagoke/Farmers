@@ -29,6 +29,8 @@ class RegisterFarmerSerializer(serializers.Serializer):
 		return filter_phone_number(value)
 
 	def create(self, validated_data):
+		user = self.context.get("user")
+		validated_data["user"] = user
 		farmer_list = Farmer(**validated_data)
 		farmer_list.save()
 		return farmer_list
