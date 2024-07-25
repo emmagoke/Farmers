@@ -2,6 +2,7 @@ from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
 from .models import Farmer
+from users.helpers import filter_phone_number
 
 class FarmerSerializer(serializers.ModelSerializer):
 	user_id = serializers.IntegerField(write_only=True)
