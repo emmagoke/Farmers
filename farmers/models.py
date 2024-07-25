@@ -11,7 +11,7 @@ class Farmer(models.Model):
 	address = models.CharField(max_length=150)
 	crops = models.CharField(max_length=150)
 	season_best_for_crops = models.CharField(max_length=15)
-	user_id = models.ForeignKey(settings.AUTH_USER_MODEL,
+	user = models.ForeignKey(settings.AUTH_USER_MODEL,
 		on_delete=models.SET_NULL, null=True)
 
 	def __str__(self):
