@@ -25,6 +25,9 @@ class RegisterFarmerSerializer(serializers.Serializer):
 	season_best_for_crops = serializers.CharField(max_length=15)
 	# user_id = serializers.PrimaryKeyRelatedField(query=User.objects.all())
 
+	def validate_phone_number(self, value):
+		return filter_phone_number(value)
+
 	def create(self, validated_data):
 		farmer_list = Farmer(**validated_data)
 		farmer_list.save()
