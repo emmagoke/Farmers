@@ -1,9 +1,11 @@
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
+from django.contrib.auth import get_user_model
 
 from .models import Farmer
 from users.helpers import filter_phone_number
 
+User = get_user_model()
 
 class FarmerSerializer(serializers.Serializer):
 	id = serializers.IntegerField(read_only=True)
