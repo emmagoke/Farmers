@@ -4,7 +4,8 @@ from rest_framework import  status
 from datetime import date
 from django.db.models import Q
 
-from .serializers import RegisterFarmerSerializer
+from .serializers import RegisterFarmerSerializer, FarmerSerializer
+from .models import Farmer
 
 class FarmerService:
     @classmethod
