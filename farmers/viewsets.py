@@ -46,4 +46,12 @@ class FarmersViewset(viewsets.ViewSet):
     def get_farmers_csv(self, request):
         response = FarmerService.get_farmer_by_user_csv(request)
 
+        if "errors" in response:
+            return ResponseManager.handle_response(
+                errors=response.get("errors", None),
+                message=response.get("message", None),
+                status=response.get("status"),
+                data=response.get("data", None)
+            )
+
         return response
