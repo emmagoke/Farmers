@@ -37,3 +37,13 @@ class FarmersViewset(viewsets.ViewSet):
             request=request,
             serializer_=response.get("serializer_"),
         )
+    
+    @action(
+        detail=False,
+        methods=["get"],
+        url_path="list-csv",
+    )
+    def get_farmers_csv(self, request):
+        response = FarmerService.get_farmer_by_user_csv(request)
+
+        return response
