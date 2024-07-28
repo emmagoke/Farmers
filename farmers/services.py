@@ -8,6 +8,7 @@ from django.http import HttpResponse
 
 from .serializers import RegisterFarmerSerializer, FarmerSerializer
 from .models import Farmer
+from .helper import calculate_age
 
 class FarmerService:
     @classmethod
@@ -75,3 +76,36 @@ class FarmerService:
             serializer_=FarmerSerializer,
             status=status.HTTP_200_OK
         )
+    
+    @classmethod
+    def get_farmer_by_user_csv(cls, request):
+        user_id = request.query_params.get('crops', None)
+
+        if user_id is None:
+            user_id = request.user
+
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="farmers.csv"'
+
+        farmers = Farmer.objects.filter(user=user_id)
+
+        writer = csv.writer(response)  # CSV writer
+
+        writer.writerow(
+            ['ID', 'First Name', 'Last Name', 'Phone Number', 'Age', 'Address', 'Crops', 'Best Season']
+        )
+        print(response)
+
+        for farmer in farmers:
+            writer.writerow([
+                farmer.id,
+                farmer.first_name,
+                farmer.last_name,
+                farmer.phone_number,
+                calculate_age(farmer.birth_date),
+                farmer.address,
+                farmer.crops,
+                farmer.season_best_for_crops
+            ])
+
+        return response
