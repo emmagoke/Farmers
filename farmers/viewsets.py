@@ -23,3 +23,17 @@ class FarmersViewset(viewsets.ViewSet):
                 status=response.get("status"),
                 data=response.get("data", None)
             )
+    
+    @action(
+        detail=False,
+        methods=["get"],
+        url_path="list",
+    )
+    def get_farmers(self, request):
+        response = FarmerService.get_farmer_service(request)
+
+        return ResponseManager.paginate_response(
+            queryset=response.get("queryset"),
+            request=request,
+            serializer_=response.get("serializer_"),
+        )
