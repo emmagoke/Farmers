@@ -1,9 +1,10 @@
 from django.db import models
 from django.conf import settings
 
+from users.models import TimeStamp
 
 # Create your models here.
-class Farmer(models.Model):
+class Farmer(TimeStamp):
 	first_name = models.CharField(max_length=50)
 	last_name = models.CharField(max_length=50)
 	phone_number = models.CharField(max_length=14, unique=True)
