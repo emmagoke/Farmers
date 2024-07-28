@@ -5,10 +5,14 @@ from datetime import date
 from django.db.models import Q
 import csv
 from django.http import HttpResponse
+from django.contrib.auth import get_user_model
 
 from .serializers import RegisterFarmerSerializer, FarmerSerializer
 from .models import Farmer
 from .helper import calculate_age
+
+User = get_user_model()
+
 
 class FarmerService:
     @classmethod
