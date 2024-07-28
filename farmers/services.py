@@ -79,10 +79,19 @@ class FarmerService:
     
     @classmethod
     def get_farmer_by_user_csv(cls, request):
-        user_id = request.query_params.get('crops', None)
+        user_id = request.query_params.get('user_id', None)
 
         if user_id is None:
             user_id = request.user
+        else:
+            try:
+                user_id = User.objects.get(id=user_id)
+            except User.DoesNotExist:
+                return dict(
+                    errors=True,
+                    message=f"There is No User Associated with this user_id: {user_id}",
+                    status=status.HTTP_400_BAD_REQUEST
+                )
 
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="farmers.csv"'
