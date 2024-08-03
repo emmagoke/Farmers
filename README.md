@@ -264,8 +264,9 @@ or a List
 
 ## The Management Tool
 
-- This management tool requires a url parameter. You new to set the environment variable `USERNAME` and `PASSWORD`
+- To upload the csv record of the farmer to Cloudinary use the command tool `python manage.py csv_upload`
 
 ```
-e,g USERNAME=username PASSWORD=your_password python manage.py csv_upload url
+The response is the url of the csv on cloudinary
+e.g https://res.cloudinary.com/djsxxql7l/raw/upload/v1722668961/Farmers/lqnpuw6auagktraexqa.csv
 ```
