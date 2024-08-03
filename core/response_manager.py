@@ -35,6 +35,14 @@ class ResponseManager:
                     ]
                 ))
         return Response({"data": data, "message": message}, status=status)
+    
+    @staticmethod
+    def handle_paginated_response(
+        paginator_instance: PageNumberPagination = PageNumberPagination(), data=None
+    ) -> Response:
+        if data is None:
+            data = {}
+        return paginator_instance.get_paginated_response(data)
 
     @staticmethod
     def paginate_response(

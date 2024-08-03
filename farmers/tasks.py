@@ -1,24 +1,26 @@
-# from celery import shared_task
+from celery import shared_task
 from django.core.mail import send_mail
-from assessment.celery import app
-from celery.schedules import crontab
-from sms import send_sms
+from core.celery import app
+# from celery.schedules import crontab
+# from sms import send_sms
 
 from .models import Farmer
 
 
-@app.task
+# @app.task
+@shared_task(name="weather_report_for_farmer")
 def weather_report_for_farmer():
     # Mock a weather report based on the season
     weather_report = {
         'rainy': 'It is going to rain this morning. Good time to plant your crops.',
-        'dry': 'It is dry and sunny today. Good time to harvest your crops.'
+        'dry': 'It is dry and sunny today. Good time to harvest your crops.',
+        "both": "It rain and wet"
     }
     
     farmers = Farmer.objects.all()
     # Loop through each farmer
     for farmer in farmers:
-        season = farmer.season_best_for_crops.split('/')[0]
+        season = farmer.season_best_for_crops.split('/')[0].lower()
         # print(season)
         report = weather_report[season]
         send_mail(
@@ -31,7 +33,8 @@ def weather_report_for_farmer():
         # send_sms(report, farmer.phone_number,
         #     backend='django_sms.backends.console.SmsBackend')
         # # Print the weather report on the console
-        print(f'Sent weather report to {farmer.name}: {report}')
+        name = farmer.first_name + ' ' + farmer.last_name
+        print(f'Sent weather report to {name}: {report}')
 
 
 # # Schedule the task to run every day at 7am using crontab

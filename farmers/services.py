@@ -1,0 +1,124 @@
+from django.db import transaction
+from django.db.utils import IntegrityError
+from rest_framework import  status
+from datetime import date
+from django.db.models import Q
+import csv
+from django.http import HttpResponse
+from django.contrib.auth import get_user_model
+
+from .serializers import RegisterFarmerSerializer, FarmerSerializer
+from .models import Farmer
+from .helper import calculate_age
+
+User = get_user_model()
+
+
+class FarmerService:
+    @classmethod
+    @transaction.atomic
+    def create_farmer_service(cls, request):
+        try:
+            serializer = RegisterFarmerSerializer(
+                data=request.data,
+                many=True,
+                context={'user': request.user}
+            )
+            if serializer.is_valid():
+                farmers = serializer.save()
+                print(farmers)
+                return dict(
+                    message="Farmers Successfully Created",
+                    status=status.HTTP_201_CREATED
+                )
+
+            print(serializer.errors)
+            return dict(
+                errors=True,
+                message=list(serializer.errors.items())[0][0] + " error.",
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        except IntegrityError as e:
+            return dict(
+                errors=True,
+                # message=list(serializer.errors.items())[0][0] + " error."
+                message=str(e),
+                status=status.HTTP_400_BAD_REQUEST
+            )
+    
+    @classmethod
+    def get_farmer_service(cls, request):
+        user = request.user
+        crops = request.query_params.get('crops', None)
+        phone_number = request.query_params.get('phone_number',None)
+        min_age = request.query_params.get('min_age', None)
+        max_age = request.query_params.get('max_age')
+        farmers = Farmer.objects.filter(user=user)
+
+        filters = Q()
+
+        if crops:
+            filters &= Q(crops__icontains=crops) # And Condition or |= for OR
+        if phone_number:
+            filters &= Q(phone_number__icontains=phone_number)
+        if min_age:
+            today = date.today()
+            date_threshold = today.replace(year=today.year - int(min_age))
+            filters &= Q(birth_date__lte=date_threshold)
+        if max_age:
+            today = date.today()
+            date_threshold = today.replace(year=today.year - int(max_age))
+            filters &= Q(birth_date__gte=date_threshold)
+        
+        print(filters)
+        farmers = farmers.filter(filters)
+
+        serializer = FarmerSerializer(farmers, many=True)
+
+        return dict(
+            queryset=farmers,
+            serializer_=FarmerSerializer,
+            status=status.HTTP_200_OK
+        )
+    
+    @classmethod
+    def get_farmer_by_user_csv(cls, request):
+        user_id = request.query_params.get('user_id', None)
+
+        if user_id is None:
+            user_id = request.user
+        else:
+            try:
+                user_id = User.objects.get(id=user_id)
+            except User.DoesNotExist:
+                return dict(
+                    errors=True,
+                    message=f"There is No User Associated with this user_id: {user_id}",
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="farmers.csv"'
+
+        farmers = Farmer.objects.filter(user=user_id)
+
+        writer = csv.writer(response)  # CSV writer
+
+        writer.writerow(
+            ['ID', 'First Name', 'Last Name', 'Phone Number', 'Age', 'Address', 'Crops', 'Best Season']
+        )
+        print(response)
+
+        for farmer in farmers:
+            writer.writerow([
+                farmer.id,
+                farmer.first_name,
+                farmer.last_name,
+                farmer.phone_number,
+                calculate_age(farmer.birth_date),
+                farmer.address,
+                farmer.crops,
+                farmer.season_best_for_crops
+            ])
+
+        return response

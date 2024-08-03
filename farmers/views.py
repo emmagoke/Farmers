@@ -41,6 +41,6 @@ class FarmerByUsedView(generics.ListAPIView):
 
 	def get_queryset(self):
 		user_id = self.kwargs['pk']
-		user = get_object_or_404(CustomUser, id=user_id)
+		user = get_object_or_404(User, id=user_id)
 		farmers_obj = Farmer.objects.filter(user_id=user)
 		return farmers_obj
