@@ -214,3 +214,12 @@ SIMPLE_JWT = {
     "USER_ID_CLAIM": "user_id",
     "TOKEN_OBTAIN_SERIALIZER": "users.serializers.CustomTokenObtainPairSerializer",
 }
+
+
+# print(config("REDIS_URL"))
+CELERY_BROKER_URL = config("REDIS_URL")
+CELERY_RESULT_BACKEND = config("REDIS_URL")
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_SERIALIZER = 'json'
+CELERY_ENABLE_UTC = False
