@@ -60,7 +60,7 @@ INSTALLED_APPS = [
     # Local App
     'users.apps.UsersConfig',
     'farmers.apps.FarmersConfig',
-    'apis.apps.ApisConfig',
+    # 'apis.apps.ApisConfig',
 ]
 
 MIDDLEWARE = [
